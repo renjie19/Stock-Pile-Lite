@@ -39,7 +39,6 @@ class UserService {
 
   update(User user) {
     this.find(user.id);
-    _userRepository.save(user);
-    return user;
+    return _userRepository.save(user);
   }
 }

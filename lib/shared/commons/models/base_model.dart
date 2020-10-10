@@ -43,7 +43,7 @@ class BaseModel extends HiveObject {
   BaseModel.instance();
 
   @override
-  Future<Function> save() {
+  Future<void> save() async {
     this.dateModified = DateTime.now().millisecondsSinceEpoch;
     return super.save();
   }

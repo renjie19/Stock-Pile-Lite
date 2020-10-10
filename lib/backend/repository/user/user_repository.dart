@@ -14,16 +14,17 @@ class UserRepository {
     this._userBox = await Hive.openBox<User>(Boxes.USER);
   }
 
-  save(User user) {
+  User save(User user) {
     var result = this._userBox.get(user.id);
     if (result == null) {
       this._userBox.put(user.id, user);
     } else {
       user.save();
     }
+    return user;
   }
 
-  delete(User user) {
+  void delete(User user) {
     user.delete();
   }
 
