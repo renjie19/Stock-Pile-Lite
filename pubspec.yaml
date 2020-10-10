@@ -24,6 +24,8 @@ dependencies:
   flutter:
     sdk: flutter
   hive: ^1.4.4+1
+  hive_flutter: ^0.3.1
+  get_it: ^5.0.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -33,6 +35,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_driver:
+    sdk: flutter
+  test: ^1.14.4
+  hive_generator: ^0.7.0+2
+  build_runner: ^1.7.4
+  mockito: ^4.1.2
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

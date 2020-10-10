@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:stockpilelite/ui/pages/login_home.dart';
 
-void main() {
+import 'backend/repository/user/user_repository.dart';
+
+void main() async {
+  await Hive.initFlutter();
+  GetIt.I.registerSingleton<UserRepository>(UserRepository());
+
   runApp(MyApp());
 }
 
@@ -11,27 +19,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      home: Scaffold(),
+      debugShowCheckedModeBanner: false,
+      home: LoginHome(),
     );
-  }
-}
-
-class StockPileLite extends StatefulWidget {
-  @override
-  _StockPileLiteState createState() => _StockPileLiteState();
-}
-
-class _StockPileLiteState extends State<StockPileLite> {
-
-
-  @override
-  bool get mounted {
-
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
 
