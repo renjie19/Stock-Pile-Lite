@@ -1,18 +1,20 @@
 import 'package:hive/hive.dart';
-import 'package:stockpilelite/shared/commons/models/base_model.dart';
+import 'package:stockpilelite/shared/models/base_model.dart';
+import 'package:stockpilelite/shared/models/customer.dart';
+import 'package:stockpilelite/shared/models/user.dart';
 part '../adapters/user_profile.g.dart';
 
 @HiveType(typeId: 3)
 class UserProfile extends BaseModel {
   @HiveField(6)
-  int userId;
+  User user;
   @HiveField(7)
-  String userName;
+  String username;
   @HiveField(8)
-  String lastName;
+  String password;
 
   UserProfile(id, dateCreated, dateModified, createdBy, modifiedBy, active,
-      this.userId, this.userName, this.lastName)
+      this.user, this.username, this.password)
       : super(id: id, dateCreated: dateCreated, dateModified: dateModified, createdBy:createdBy, modifiedBy:modifiedBy, active:active);
 
   UserProfile.instance();

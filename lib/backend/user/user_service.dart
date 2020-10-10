@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
-import 'package:stockpilelite/backend/repository/user/user_repository.dart';
-import 'package:stockpilelite/shared/commons/models/user.dart';
+import 'file:///C:/Users/Renjie/Desktop/personal_projects/stock_pile_lite/lib/backend/user/user_repository.dart';
+import 'package:stockpilelite/shared/models/user.dart';
 
 class UserService {
   UserRepository _userRepository;

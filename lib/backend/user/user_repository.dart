@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:stockpilelite/shared/commons/constants/boxes.dart';
-import 'package:stockpilelite/shared/commons/models/user.dart';
+import 'package:stockpilelite/shared/constants/boxes.dart';
+import 'package:stockpilelite/shared/models/user.dart';
 
 class UserRepository {
   Box<User> _userBox;

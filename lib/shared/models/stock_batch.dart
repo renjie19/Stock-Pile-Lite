@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:stockpilelite/shared/commons/models/base_model.dart';
+import 'package:stockpilelite/shared/models/base_model.dart';
 part '../adapters/stock_batch.g.dart';
 
 @HiveType(typeId: 5)

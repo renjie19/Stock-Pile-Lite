@@ -23,7 +23,7 @@ class UserProfileAdapter extends TypeAdapter<UserProfile> {
       fields[3] as String,
       fields[4] as String,
       fields[5] as bool,
-      fields[6] as int,
+      fields[6] as User,
       fields[7] as String,
       fields[8] as String,
     );
@@ -34,11 +34,11 @@ class UserProfileAdapter extends TypeAdapter<UserProfile> {
     writer
       ..writeByte(9)
       ..writeByte(6)
-      ..write(obj.userId)
+      ..write(obj.user)
       ..writeByte(7)
-      ..write(obj.userName)
+      ..write(obj.username)
       ..writeByte(8)
-      ..write(obj.lastName)
+      ..write(obj.password)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)

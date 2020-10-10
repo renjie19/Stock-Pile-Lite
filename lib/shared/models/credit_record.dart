@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
-import 'package:stockpilelite/shared/commons/models/base_model.dart';
-import 'package:stockpilelite/shared/commons/models/customer.dart';
+import 'package:stockpilelite/shared/models/base_model.dart';
+import 'package:stockpilelite/shared/models/customer.dart';
 part '../adapters/credit_record.g.dart';
 
 @HiveType(typeId: 8)

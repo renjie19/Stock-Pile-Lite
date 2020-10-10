@@ -2,14 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_driver/driver_extension.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:stockpilelite/backend/service/user/user_service.dart';
-import 'package:stockpilelite/shared/commons/models/user.dart';
+import 'package:stockpilelite/backend/user/user_service.dart';
+import 'package:stockpilelite/shared/models/user.dart';
 import 'package:stockpilelite/stock_pile_lite.dart';
 
 void main() async {
   enableFlutterDriverExtension();
   await StockPileLite.initialize();
-
   UserService service = GetIt.I<UserService>();
 
   User _getUser() {
