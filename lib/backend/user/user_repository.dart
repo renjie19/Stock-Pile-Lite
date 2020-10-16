@@ -15,12 +15,7 @@ class UserRepository {
   }
 
   User save(User user) {
-    var result = this._userBox.get(user.id);
-    if (result == null) {
-      this._userBox.put(user.id, user);
-    } else {
-      user.save();
-    }
+    this._userBox.put(user.id, user);
     return user;
   }
 
@@ -41,5 +36,9 @@ class UserRepository {
         ._userBox
         .values
         .firstWhere((user) => user.fullName == name, orElse: () => null);
+  }
+
+  void deleteAll() {
+    _userBox.clear();
   }
 }

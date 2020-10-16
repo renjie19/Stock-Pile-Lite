@@ -10,16 +10,12 @@ class UserProfileRepository {
   }
 
   _initializeBox() async {
+    Hive.registerAdapter(UserProfileAdapter());
     this._userProfileBox = await Hive.openBox<UserProfile>(Boxes.USER_PROFILE);
   }
 
   UserProfile save(UserProfile profile) {
-    UserProfile userProfile = this._userProfileBox.get(profile.id);
-    if (userProfile == null) {
-      this._userProfileBox.add(profile);
-    } else {
-      profile.save();
-    }
+    this._userProfileBox.put(profile.id, profile);
     return profile;
   }
 
@@ -46,5 +42,9 @@ class UserProfileRepository {
         (profile) =>
             profile.username == username && profile.password == password,
         orElse: () => null);
+  }
+
+  void deleteAll() {
+    _userProfileBox.clear();
   }
 }

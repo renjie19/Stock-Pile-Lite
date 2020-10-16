@@ -37,4 +37,7 @@ class UserProfileService {
     foundProfile.active = !foundProfile.active;
     return foundProfile;
   }
+  void deleteAll() {
+    _repository.deleteAll();
+  }
 }

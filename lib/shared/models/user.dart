@@ -2,7 +2,6 @@ import 'package:hive/hive.dart';
 import 'package:stockpilelite/shared/models/base_model.dart';
 part '../adapters/user.g.dart';
 
-
 @HiveType(typeId: 2)
 class User extends BaseModel {
   @HiveField(6)
