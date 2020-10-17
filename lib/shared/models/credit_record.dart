@@ -1,6 +1,8 @@
 import 'package:hive/hive.dart';
 import 'package:stockpilelite/shared/models/base_model.dart';
+import 'package:stockpilelite/shared/models/credit_item.dart';
 import 'package:stockpilelite/shared/models/customer.dart';
+import 'package:stockpilelite/shared/models/payment.dart';
 part '../adapters/credit_record.g.dart';
 
 @HiveType(typeId: 8)
@@ -15,8 +17,10 @@ class CreditRecord extends BaseModel {
   String paymentStatus;
   @HiveField(10)
   double transferredAmount;
-// TODO: items
-// TODO: payment
+  @HiveField(11)
+  List<CreditItem> items;
+  @HiveField(12)
+  List<Payment> payments;
 
   CreditRecord(
       id,
@@ -29,7 +33,9 @@ class CreditRecord extends BaseModel {
       this.totalAmount,
       this.amountPaid,
       this.paymentStatus,
-      this.transferredAmount)
+      this.transferredAmount,
+      this.items,
+      this.payments)
       : super(id: id, dateCreated: dateCreated, dateModified: dateModified, createdBy:createdBy, modifiedBy:modifiedBy, active:active);
 
   CreditRecord.instance();

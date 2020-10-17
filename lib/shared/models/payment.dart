@@ -5,15 +5,15 @@ part '../adapters/payment.g.dart';
 @HiveType(typeId: 10)
 class Payment extends BaseModel {
   @HiveField(6)
-  double amount;
+  double amount; // current amount to pay on record before the payment
   @HiveField(7)
   String paidBy;
   @HiveField(8)
   String receivedBy;
   @HiveField(9)
-  double change;
+  double change; // change from amount and received amount
   @HiveField(10)
-  double receivedAmount;
+  double receivedAmount; // amount received from payee
 
   Payment(
       id,

@@ -17,23 +17,26 @@ class CreditRecordAdapter extends TypeAdapter<CreditRecord> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CreditRecord(
-        fields[0] as String,
-        fields[1] as int,
-        fields[2] as int,
-        fields[3] as String,
-        fields[4] as String,
-        fields[5] as bool,
-        fields[6] as Customer,
-        fields[7] as double,
-        fields[8] as double,
-        fields[9] as String,
-        fields[10] as double);
+      fields[0] as String,
+      fields[1] as int,
+      fields[2] as int,
+      fields[3] as String,
+      fields[4] as String,
+      fields[5] as bool,
+      fields[6] as Customer,
+      fields[7] as double,
+      fields[8] as double,
+      fields[9] as String,
+      fields[10] as double,
+      (fields[11] as List)?.cast<CreditItem>(),
+      (fields[12] as List)?.cast<Payment>(),
+    );
   }
 
   @override
   void write(BinaryWriter writer, CreditRecord obj) {
     writer
-      ..writeByte(11)
+      ..writeByte(13)
       ..writeByte(6)
       ..write(obj.customer)
       ..writeByte(7)
@@ -44,6 +47,10 @@ class CreditRecordAdapter extends TypeAdapter<CreditRecord> {
       ..write(obj.paymentStatus)
       ..writeByte(10)
       ..write(obj.transferredAmount)
+      ..writeByte(11)
+      ..write(obj.items)
+      ..writeByte(12)
+      ..write(obj.payments)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
