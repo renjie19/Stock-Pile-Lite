@@ -1,6 +1,8 @@
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:stockpilelite/backend/customer/customer_repository.dart';
+import 'package:stockpilelite/backend/customer/customer_service.dart';
 import 'package:stockpilelite/backend/item/item_repository.dart';
 import 'package:stockpilelite/backend/item/item_service.dart';
 import 'package:stockpilelite/backend/user/user_repository.dart';
@@ -17,5 +19,7 @@ class StockPileLite {
     GetIt.I.registerSingleton<UserProfileService>(UserProfileService());
     GetIt.I.registerSingleton<ItemRepository>(ItemRepository());
     GetIt.I.registerSingleton<ItemService>(ItemService());
+    GetIt.I.registerSingleton<CustomerRepository>(CustomerRepository());
+    GetIt.I.registerSingleton<CustomerService>(CustomerService());
   }
 }

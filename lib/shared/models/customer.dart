@@ -40,4 +40,8 @@ class Customer extends BaseModel {
       : super(id: id, dateCreated: dateCreated, dateModified: dateModified, createdBy:createdBy, modifiedBy:modifiedBy, active:active);
 
   Customer.instance();
+
+  String get fullName {
+    return "$firstName  $lastName";
+  }
 }
