@@ -18,4 +18,8 @@ class UserProfile extends BaseModel {
       : super(id: id, dateCreated: dateCreated, dateModified: dateModified, createdBy:createdBy, modifiedBy:modifiedBy, active:active);
 
   UserProfile.instance();
+  UserProfile.from(User user, String username, String password) {
+    this.user = user;
+    this.password = password;
+  }
 }

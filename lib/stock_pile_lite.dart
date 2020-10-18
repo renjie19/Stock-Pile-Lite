@@ -13,6 +13,7 @@ import 'package:stockpilelite/backend/user/user_repository.dart';
 import 'package:stockpilelite/backend/user/user_service.dart';
 import 'package:stockpilelite/backend/user_profile/user_profile_repository.dart';
 import 'package:stockpilelite/backend/user_profile/user_profile_service.dart';
+import 'package:stockpilelite/backend/user_profile/user_profile_user_facade.dart';
 
 class StockPileLite {
   static initialize() async {
@@ -29,5 +30,6 @@ class StockPileLite {
     GetIt.I.registerSingleton<CreditRecordService>(CreditRecordService());
     GetIt.I.registerSingleton<PaymentRepository>(PaymentRepository());
     GetIt.I.registerSingleton<PaymentService>(PaymentService());
+    GetIt.I.registerSingleton<UserProfileUserFacade>(UserProfileUserFacade());
   }
 }
