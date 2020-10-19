@@ -2,9 +2,11 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:form_field_validator/form_field_validator.dart';
+import 'package:get_it/get_it.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:stockpilelite/backend/auth_service.dart';
 import 'package:stockpilelite/shared/constants/app_color.dart';
+import 'package:stockpilelite/ui/pages/home.dart';
 import 'package:stockpilelite/ui/pages/register.dart';
 
 class LoginHome extends StatefulWidget {
@@ -14,6 +16,8 @@ class LoginHome extends StatefulWidget {
 
 class _LoginHomeState extends State<LoginHome> {
   var formKey = GlobalKey<FormBuilderState>();
+  bool isNotVisible = true;
+  AuthService authService = GetIt.I<AuthService>();
 
   @override
   Widget build(BuildContext context) {
@@ -62,16 +66,25 @@ class _LoginHomeState extends State<LoginHome> {
                               labelText: 'Username',
                             ),
                             validators: [
-                              FormBuilderValidators.required(errorText: 'Username is required')
+                              FormBuilderValidators.required(
+                                  errorText: 'Username is required')
                             ],
                           ),
                           SizedBox(height: 10),
                           FormBuilderTextField(
                               attribute: 'password',
-                              decoration:
-                                  InputDecoration(labelText: 'Password'),
+                              obscureText: isNotVisible,
+                              decoration: InputDecoration(
+                                  labelText: 'Password',
+                                  suffixIcon: InkWell(
+                                      onTap: () => setState(
+                                          () => isNotVisible = !isNotVisible),
+                                      child: Icon(isNotVisible
+                                          ? LineAwesomeIcons.eye_slash
+                                          : LineAwesomeIcons.eye))),
                               validators: [
-                               FormBuilderValidators.required(errorText: 'Password is required')
+                                FormBuilderValidators.required(
+                                    errorText: 'Password is required')
                               ]),
                           SizedBox(height: 30),
                         ],
@@ -120,15 +133,25 @@ class _LoginHomeState extends State<LoginHome> {
   }
 
   void _login() {
-    if (formKey.currentState.saveAndValidate()) {
-      // TODO: implement login
-    } else {
+    try {
+      if (formKey.currentState.saveAndValidate()) {
+        var values = formKey.currentState.value;
+        authService.login(values['username'], values['password']);
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return Home();
+        }));
+      } else {
+        BotToast.showSimpleNotification(
+            title: 'Please verify fields', backgroundColor: Colors.redAccent);
+      }
+    } catch (e) {
       BotToast.showSimpleNotification(
-          title: 'Please verify fields', backgroundColor: Colors.redAccent);
+          title: e.message, backgroundColor: Colors.redAccent);
     }
   }
 
   void _showRegisterForm() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => Register()));
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => Register()));
   }
 }

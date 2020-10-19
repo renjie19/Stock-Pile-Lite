@@ -2,7 +2,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:stockpilelite/shared/constants/app_color.dart';
 import 'package:stockpilelite/stock_pile_lite.dart';
-import 'package:stockpilelite/ui/pages/login_home.dart';
+import 'package:stockpilelite/ui/pages/login.dart';
 
 void main() async {
   runApp(MyApp());

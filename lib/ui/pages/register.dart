@@ -15,7 +15,7 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
   var _formKey = GlobalKey<FormBuilderState>();
-  int _age = 0;
+  bool _isNotVisible = true;
   UserProfileUserFacade _facade = GetIt.I<UserProfileUserFacade>();
 
   InputDecoration _getInputDecoration(String label) {
@@ -45,10 +45,9 @@ class _RegisterState extends State<Register> {
                   ),
                   SizedBox(height: 10),
                   FormBuilderDateTimePicker(
-                    inputType: InputType.date,
-                    attribute: 'birthday',
-                    decoration: _getInputDecoration('Birthday *')
-                  ),
+                      inputType: InputType.date,
+                      attribute: 'birthday',
+                      decoration: _getInputDecoration('Birthday *')),
                   SizedBox(height: 10),
                   FormBuilderTextField(
                     attribute: 'username',
@@ -57,8 +56,16 @@ class _RegisterState extends State<Register> {
                   SizedBox(height: 10),
                   FormBuilderTextField(
                     attribute: 'password',
-                    obscureText: true,
-                    decoration: _getInputDecoration('Password *'),
+                    obscureText: _isNotVisible,
+                    decoration: _getInputDecoration('Password *').copyWith(
+                        suffixIcon: InkWell(
+                      radius: 10,
+                      onTap: () =>
+                          setState(() => _isNotVisible = !_isNotVisible),
+                      child: Icon(_isNotVisible
+                          ? LineAwesomeIcons.eye_slash
+                          : LineAwesomeIcons.eye),
+                    )),
                   ),
                   SizedBox(height: 25),
                   ButtonBar(
@@ -74,7 +81,7 @@ class _RegisterState extends State<Register> {
                       MaterialButton(
                           padding: EdgeInsets.all(15),
                           color: AppColor.primary,
-                          onPressed: _save,
+                          onPressed: () => _save(),
                           shape: RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(5))),
@@ -98,25 +105,25 @@ class _RegisterState extends State<Register> {
 
   void _save() {
     try {
-      BotToast.showLoading();
       if (_formKey.currentState.saveAndValidate()) {
         var formValues = _formKey.currentState.value;
         User user = User.instance();
         user.firstName = formValues['firstName'];
         user.lastName = formValues['lastName'];
         user.birthday = formValues['birthday'].millisecondsSinceEpoch;
-        user.age = _getAge(formValues['age']);
+        user.age = _getAge(formValues['birthday']);
         this._facade.create(user, formValues['username'], formValues['password']);
-        BotToast.showSimpleNotification(title: 'Success', backgroundColor: Colors.green);
+        BotToast.showSimpleNotification(
+            title: 'Success', backgroundColor: Colors.green);
+        Navigator.pop(context);
         return;
       }
-      BotToast.showSimpleNotification(title: 'Please verify fields');
+      BotToast.showSimpleNotification(title: 'Please verify fields', backgroundColor: AppColor.error);
     } catch (e) {
-      BotToast.showSimpleNotification(title: e.message, backgroundColor: AppColor.error);
+      BotToast.showSimpleNotification(
+          title: e.message, backgroundColor: AppColor.error);
     } finally {
       BotToast.closeAllLoading();
     }
-
-
   }
 }

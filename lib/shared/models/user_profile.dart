@@ -20,6 +20,7 @@ class UserProfile extends BaseModel {
   UserProfile.instance();
   UserProfile.from(User user, String username, String password) {
     this.user = user;
+    this.username = username;
     this.password = password;
   }
 }
