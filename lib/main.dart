@@ -5,8 +5,8 @@ import 'package:stockpilelite/stock_pile_lite.dart';
 import 'package:stockpilelite/ui/pages/login.dart';
 
 void main() async {
-  runApp(MyApp());
   await StockPileLite.initialize();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

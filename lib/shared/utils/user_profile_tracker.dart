@@ -7,7 +7,7 @@ class UserProfileTracker {
     _initialize();
   }
 
-  _initialize() async {
+  Future<void> _initialize() async {
     _preferences = await SharedPreferences.getInstance();
   }
 

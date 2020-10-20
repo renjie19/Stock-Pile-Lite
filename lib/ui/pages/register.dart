@@ -105,6 +105,7 @@ class _RegisterState extends State<Register> {
 
   void _save() {
     try {
+      // open loading
       if (_formKey.currentState.saveAndValidate()) {
         var formValues = _formKey.currentState.value;
         User user = User.instance();
@@ -123,7 +124,7 @@ class _RegisterState extends State<Register> {
       BotToast.showSimpleNotification(
           title: e.message, backgroundColor: AppColor.error);
     } finally {
-      BotToast.closeAllLoading();
+      // close loading
     }
   }
 }

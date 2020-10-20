@@ -20,20 +20,22 @@ import 'package:stockpilelite/shared/utils/user_profile_tracker.dart';
 class StockPileLite {
   static initialize() async {
     await Hive.initFlutter();
-    GetIt.I.registerSingleton<UserRepository>(UserRepository());
-    GetIt.I.registerSingleton<UserService>(UserService());
-    GetIt.I.registerSingleton<UserProfileRepository>(UserProfileRepository());
-    GetIt.I.registerSingleton<UserProfileService>(UserProfileService());
-    GetIt.I.registerSingleton<ItemRepository>(ItemRepository());
-    GetIt.I.registerSingleton<ItemService>(ItemService());
-    GetIt.I.registerSingleton<CustomerRepository>(CustomerRepository());
-    GetIt.I.registerSingleton<CustomerService>(CustomerService());
-    GetIt.I.registerSingleton<CreditRepository>(CreditRepository());
-    GetIt.I.registerSingleton<CreditRecordService>(CreditRecordService());
-    GetIt.I.registerSingleton<PaymentRepository>(PaymentRepository());
-    GetIt.I.registerSingleton<PaymentService>(PaymentService());
-    GetIt.I.registerSingleton<UserProfileUserFacade>(UserProfileUserFacade());
-    GetIt.I.registerSingleton<UserProfileTracker>(UserProfileTracker());
-    GetIt.I.registerSingleton<AuthService>(AuthService());
+    GetIt getIt = GetIt.instance;
+    getIt.registerSingleton<UserRepository>(UserRepository());
+    getIt.registerSingleton<UserService>(UserService());
+    getIt.registerSingleton<UserProfileRepository>(UserProfileRepository());
+    getIt.registerSingleton<UserProfileService>(UserProfileService());
+    getIt.registerSingleton<UserProfileTracker>(UserProfileTracker());
+    getIt.registerSingleton<AuthService>(AuthService());
+    getIt.registerSingleton<ItemRepository>(ItemRepository());
+    getIt.registerSingleton<ItemService>(ItemService());
+    getIt.registerSingleton<CustomerRepository>(CustomerRepository());
+    getIt.registerSingleton<CustomerService>(CustomerService());
+    getIt.registerSingleton<CreditRepository>(CreditRepository());
+    getIt.registerSingleton<CreditRecordService>(CreditRecordService());
+    getIt.registerSingleton<PaymentRepository>(PaymentRepository());
+    getIt.registerSingleton<PaymentService>(PaymentService());
+    getIt.registerSingleton<UserProfileUserFacade>(UserProfileUserFacade());
+
   }
 }
