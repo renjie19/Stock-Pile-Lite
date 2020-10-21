@@ -6,6 +6,7 @@ import 'package:get_it/get_it.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:stockpilelite/backend/auth_service.dart';
 import 'package:stockpilelite/shared/constants/app_color.dart';
+import 'package:stockpilelite/shared/utils/user_profile_tracker.dart';
 import 'package:stockpilelite/ui/pages/home.dart';
 import 'package:stockpilelite/ui/pages/register.dart';
 
@@ -19,15 +20,36 @@ class _LoginHomeState extends State<LoginHome> {
   bool isNotVisible = true;
   AuthService authService = GetIt.I<AuthService>();
 
+  void checkSession() {
+    UserProfileTracker userProfileTracker = GetIt.I<UserProfileTracker>();
+    var expired = userProfileTracker.isSessionExpired;
+    if (!expired) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return Home();
+      }));
+      userProfileTracker.startSession();
+      return;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkSession();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
         resizeToAvoidBottomPadding: true,
         body: Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 10),
             child: FormBuilder(
-              autovalidateMode: AutovalidateMode.onUserInteraction,
               key: formKey,
               child: SingleChildScrollView(
                 child: Column(
@@ -36,31 +58,31 @@ class _LoginHomeState extends State<LoginHome> {
                     children: [
                       Icon(LineAwesomeIcons.dropbox,
                           size: 90, color: AppColor.primary),
-                      Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Stock',
-                              style: TextStyle(
-                                  color: AppColor.primary,
-                                  fontFamily: 'Carter',
-                                  fontSize: 60,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              'Pile',
-                              style: TextStyle(
-                                  color: AppColor.secondary,
-                                  fontFamily: 'Carter',
-                                  fontSize: 60,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ]),
+                      Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                        Text(
+                          'Stock',
+                          style: TextStyle(
+                              color: AppColor.primary,
+                              fontFamily: 'Carter',
+                              fontSize: 60,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'Pile',
+                          style: TextStyle(
+                              color: AppColor.secondary,
+                              fontFamily: 'Carter',
+                              fontSize: 60,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ]),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           SizedBox(height: 30),
                           FormBuilderTextField(
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                            textInputAction: TextInputAction.next,
                             attribute: 'username',
                             decoration: InputDecoration(
                               labelText: 'Username',
@@ -72,6 +94,9 @@ class _LoginHomeState extends State<LoginHome> {
                           ),
                           SizedBox(height: 10),
                           FormBuilderTextField(
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              textInputAction: TextInputAction.done,
                               attribute: 'password',
                               obscureText: isNotVisible,
                               decoration: InputDecoration(
@@ -129,7 +154,9 @@ class _LoginHomeState extends State<LoginHome> {
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   void _login() {
@@ -140,6 +167,7 @@ class _LoginHomeState extends State<LoginHome> {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Home();
         }));
+        formKey.currentState.reset();
       } else {
         BotToast.showSimpleNotification(
             title: 'Please verify fields', backgroundColor: Colors.redAccent);

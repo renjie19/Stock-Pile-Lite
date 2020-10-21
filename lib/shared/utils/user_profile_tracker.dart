@@ -31,7 +31,9 @@ class UserProfileTracker {
     if (_preferences.getInt('session') == null) {
       return true;
     }
-    return DateTime.now().isAfter(DateTime.fromMicrosecondsSinceEpoch(_preferences.getInt('session')));
+    var session = DateTime.fromMillisecondsSinceEpoch(_preferences.getInt('session'));
+    var now = DateTime.now();
+    return DateTime(session.year, session.month, session.day).difference(DateTime(now.year, now.month, now.day)).isNegative;
   }
 
   void endSession() {
