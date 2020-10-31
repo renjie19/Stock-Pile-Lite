@@ -5,11 +5,9 @@ import 'package:stockpilelite/shared/models/item.dart';
 class ItemRepository {
   Box<Item> _itemBox;
 
-  ItemRepository() {
-    _initializeBox();
-  }
+  ItemRepository();
 
-  _initializeBox() async {
+  Future initializeBox() async {
     Hive.registerAdapter(ItemAdapter());
     this._itemBox = await Hive.openBox<Item>(Boxes.ITEM);
   }

@@ -5,11 +5,9 @@ import 'package:stockpilelite/shared/models/payment.dart';
 class PaymentRepository {
   Box<Payment> _paymentBox;
 
-  PaymentRepository() {
-    _initialize();
-  }
+  PaymentRepository();
 
-  void _initialize() async {
+  Future initialize() async {
     Hive.registerAdapter(PaymentAdapter());
     _paymentBox = await Hive.openBox(Boxes.PAYMENT);
   }

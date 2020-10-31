@@ -5,11 +5,9 @@ import 'package:stockpilelite/shared/models/user.dart';
 class UserRepository {
   Box<User> _userBox;
 
-  UserRepository() {
-    _initializeBox();
-  }
+  UserRepository();
 
-  _initializeBox() async {
+  Future initializeBox() async {
     Hive.registerAdapter(UserAdapter());
     this._userBox = await Hive.openBox<User>(Boxes.USER);
   }

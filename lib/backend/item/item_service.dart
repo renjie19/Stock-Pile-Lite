@@ -3,6 +3,7 @@ import 'package:stockpilelite/backend/item/item_repository.dart';
 import 'package:stockpilelite/shared/dtos/item_dto.dart';
 import 'package:stockpilelite/shared/mappers/item_mapper.dart';
 import 'package:stockpilelite/shared/models/item.dart';
+import 'package:stockpilelite/shared/utils/user_profile_tracker.dart';
 
 class ItemService {
   ItemRepository _repository = GetIt.I<ItemRepository>();
@@ -11,7 +12,8 @@ class ItemService {
     if (dto == null) {
       return null;
     }
-    return ItemMapper.toDto(_repository.save(ItemMapper.toEntity(dto, Item.instance())));
+    var item = Item.instance();
+    return ItemMapper.toDto(_repository.save(ItemMapper.toEntity(dto, item)));
   }
   ItemDto update(ItemDto dto) {
     if (dto == null) {
@@ -32,7 +34,7 @@ class ItemService {
   }
 
   List<ItemDto> findAll() {
-    return _repository.findAll().map((e) => ItemMapper.toDto(e));
+    return _repository.findAll().map((e) => ItemMapper.toDto(e)).toList();
   }
 
   void delete(String id) {

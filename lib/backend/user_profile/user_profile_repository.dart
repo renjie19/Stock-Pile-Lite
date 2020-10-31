@@ -5,11 +5,9 @@ import 'package:stockpilelite/shared/models/user_profile.dart';
 class UserProfileRepository {
   Box<UserProfile> _userProfileBox;
 
-  UserProfileRepository() {
-    _initializeBox();
-  }
+  UserProfileRepository();
 
-  _initializeBox() async {
+  Future initializeBox() async {
     Hive.registerAdapter(UserProfileAdapter());
     this._userProfileBox = await Hive.openBox<UserProfile>(Boxes.USER_PROFILE);
   }

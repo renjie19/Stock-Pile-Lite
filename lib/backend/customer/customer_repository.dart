@@ -5,11 +5,9 @@ import 'package:stockpilelite/shared/models/customer.dart';
 class CustomerRepository {
   Box<Customer> _customerBox;
 
-  CustomerRepository(){
-    _initialize();
-  }
+  CustomerRepository();
 
-  void _initialize() async {
+  Future initialize() async {
     Hive.registerAdapter(CustomerAdapter());
     _customerBox = await Hive.openBox<Customer>(Boxes.CUSTOMER);
   }

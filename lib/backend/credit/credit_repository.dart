@@ -7,11 +7,9 @@ import 'package:stockpilelite/shared/models/credit_record.dart';
 class CreditRepository {
   Box<CreditRecord> _creditBox;
 
-  CreditRepository() {
-    _initialize();
-  }
+  CreditRepository();
 
-  void _initialize() async {
+  Future initialize() async {
     Hive.registerAdapter(CreditRecordAdapter());
     Hive.registerAdapter(CreditItemAdapter());
     _creditBox = await Hive.openBox(Boxes.CREDIT_RECORD);

@@ -21,21 +21,28 @@ class StockPileLite {
   static initialize() async {
     await Hive.initFlutter();
     GetIt getIt = GetIt.instance;
+    getIt.registerSingleton<ItemRepository>(ItemRepository());
     getIt.registerSingleton<UserRepository>(UserRepository());
-    getIt.registerSingleton<UserService>(UserService());
     getIt.registerSingleton<UserProfileRepository>(UserProfileRepository());
+    getIt.registerSingleton<CreditRepository>(CreditRepository());
+    getIt.registerSingleton<CustomerRepository>(CustomerRepository());
+    getIt.registerSingleton<PaymentRepository>(PaymentRepository());
+
+    getIt.registerSingleton<UserService>(UserService());
     getIt.registerSingleton<UserProfileService>(UserProfileService());
     getIt.registerSingleton<UserProfileTracker>(UserProfileTracker());
     getIt.registerSingleton<AuthService>(AuthService());
-    getIt.registerSingleton<ItemRepository>(ItemRepository());
     getIt.registerSingleton<ItemService>(ItemService());
-    getIt.registerSingleton<CustomerRepository>(CustomerRepository());
     getIt.registerSingleton<CustomerService>(CustomerService());
-    getIt.registerSingleton<CreditRepository>(CreditRepository());
     getIt.registerSingleton<CreditRecordService>(CreditRecordService());
-    getIt.registerSingleton<PaymentRepository>(PaymentRepository());
     getIt.registerSingleton<PaymentService>(PaymentService());
     getIt.registerSingleton<UserProfileUserFacade>(UserProfileUserFacade());
 
+    await GetIt.I<ItemRepository>().initializeBox();
+    await GetIt.I<UserRepository>().initializeBox();
+    await GetIt.I<UserProfileRepository>().initializeBox();
+    await GetIt.I<CreditRepository>().initialize();
+    await GetIt.I<CustomerRepository>().initialize();
+    await GetIt.I<PaymentRepository>().initialize();
   }
 }
