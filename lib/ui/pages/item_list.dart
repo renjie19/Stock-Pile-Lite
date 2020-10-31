@@ -1,4 +1,3 @@
-import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -38,11 +37,12 @@ class _ItemListState extends State<ItemList> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: SizeUtil.getWidthFromTotalAvailable(context, 30),
+                        width: SizeUtil.getWidthFromTotalAvailable(context, 50),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: TextField(
                               decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.all(2),
                                   labelText: 'Search Item...',
                                   prefixIcon: Icon(LineAwesomeIcons.search)),
                               onChanged: (value) =>
@@ -51,7 +51,6 @@ class _ItemListState extends State<ItemList> {
                       ),
                       ButtonBar(children: [
                         MaterialButton(
-                          padding: EdgeInsets.all(15),
                           color: AppColor.secondary,
                           onPressed: () => showItemCreateFormDialog(false),
                           shape: RoundedRectangleBorder(
@@ -61,7 +60,7 @@ class _ItemListState extends State<ItemList> {
                             Icon(LineAwesomeIcons.plus),
                             SizedBox(width: 10),
                             Text(
-                              'ADD ITEM',
+                              'Add Item',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -70,36 +69,67 @@ class _ItemListState extends State<ItemList> {
                         ),
                       ])
                     ]),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Card(
-                    elevation: 5,
-                    child: DataTable(
-                      showCheckboxColumn: false,
-                      columns: [
-                        DataColumn(label: Text('Name')),
-                        DataColumn(label: Text('Brand')),
-                        DataColumn(label: Text('Retail'), numeric: true),
-                        DataColumn(label: Text('Wholesale'), numeric: true),
-                        DataColumn(label: Text('Capital'), numeric: true),
-                      ],
-                      rows: List.generate(
-                          this.filteredItems(this.filter).length, (index) {
-                        ItemDto item = this.filteredItems(filter)[index];
-                        return DataRow(
-                            onSelectChanged: (selected) => showItemCreateFormDialog(true, dto: item),
-                            cells: [
-                              // TODO: add item code
-                              DataCell(Text(item.name)),
-                              DataCell(Text(item.brand)),
-                              DataCell(Text('${item.retail}')),
-                              DataCell(Text('${item.wholeSale}')),
-                              DataCell(Text('${item.capital}')),
-                            ]);
-                      }),
+                Visibility(
+                  visible: this.filteredItems(this.filter).length > 0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: SizeUtil.getHeightFromTotalAvailable(context, 69)
+                      ),
+                      child: Card(
+                        elevation: 5,
+                        child: SingleChildScrollView(
+                          child: DataTable(
+                            columnSpacing: 3,
+                            headingTextStyle: TextStyle(
+                                fontSize: 13,
+                                fontFamily: 'Poppins',
+                                color: Colors.black),
+                            dataTextStyle: TextStyle(
+                                fontFamily: 'Poppins',
+                                color: Colors.black),
+                            showCheckboxColumn: false,
+                            columns: [
+                              DataColumn(label: Text('Name')),
+                              DataColumn(label: Text('Brand')),
+                              DataColumn(label: Text('Retail'), numeric: true),
+                              DataColumn(label: Text('Wholesale'), numeric: true),
+                              DataColumn(label: Text('Capital'), numeric: true),
+                            ],
+                            rows: List.generate(
+                                this.filteredItems(this.filter).length, (index) {
+                              ItemDto item = this.filteredItems(filter)[index];
+                              return DataRow(
+                                  onSelectChanged: (selected) =>
+                                      showItemCreateFormDialog(true, dto: item),
+                                  cells: [
+                                    // TODO: add item code
+                                    DataCell(Text(item.name)),
+                                    DataCell(Text(item.brand)),
+                                    DataCell(Text('${item.retail}', style: TextStyle(color: Colors.green),)),
+                                    DataCell(Text('${item.wholeSale}', style: TextStyle(color: Colors.yellow[900]),)),
+                                    DataCell(Text('${item.capital}', style: TextStyle(color: Colors.deepOrange),)),
+                                  ]);
+                            }),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ),
+                Visibility(
+                  visible: this.filteredItems(this.filter).length == 0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(LineAwesomeIcons.times_circle,size: 50, color: AppColor.error,),
+                      Text('No item found', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+                      Text('Adjust your filter or create new items')
+                    ]
+                  )
+                )
               ],
             ),
           ),
