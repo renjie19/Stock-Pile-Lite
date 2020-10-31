@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:stockpilelite/backend/auth_service.dart';
 import 'package:stockpilelite/shared/constants/app_color.dart';
+import 'package:stockpilelite/ui/pages/item_list.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -14,9 +15,7 @@ class _HomeState extends State<Home> {
   AuthService authService = GetIt.I<AuthService>();
   int currentIndex = 0;
   var pages = [
-    Container(
-      color: Colors.green,
-    ),
+    ItemList(),
     Container(
       color: Colors.red,
     )
@@ -42,7 +41,7 @@ class _HomeState extends State<Home> {
               ],
               bottom: TabBar(
                 tabs: [
-                  Tab(text: 'Stocks', icon: Icon(LineAwesomeIcons.inbox)),
+                  Tab(text: 'Items', icon: Icon(LineAwesomeIcons.inbox)),
                   Tab(text: 'Credit Records', icon: Icon(LineAwesomeIcons.list))
                 ],
               )),
