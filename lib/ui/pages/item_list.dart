@@ -1,3 +1,4 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -75,8 +76,8 @@ class _ItemListState extends State<ItemList> {
                     padding: const EdgeInsets.all(8.0),
                     child: ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxHeight: SizeUtil.getHeightFromTotalAvailable(context, 69)
-                      ),
+                          maxHeight: SizeUtil.getHeightFromTotalAvailable(
+                              context, 69)),
                       child: Card(
                         elevation: 5,
                         child: SingleChildScrollView(
@@ -87,18 +88,20 @@ class _ItemListState extends State<ItemList> {
                                 fontFamily: 'Poppins',
                                 color: Colors.black),
                             dataTextStyle: TextStyle(
-                                fontFamily: 'Poppins',
-                                color: Colors.black),
+                                fontFamily: 'Poppins', color: Colors.black),
                             showCheckboxColumn: false,
                             columns: [
                               DataColumn(label: Text('Name')),
                               DataColumn(label: Text('Brand')),
                               DataColumn(label: Text('Retail'), numeric: true),
-                              DataColumn(label: Text('Wholesale'), numeric: true),
+                              DataColumn(
+                                  label: Text('Wholesale'), numeric: true),
                               DataColumn(label: Text('Capital'), numeric: true),
+                              DataColumn(label: Text('Action'), numeric: true),
                             ],
                             rows: List.generate(
-                                this.filteredItems(this.filter).length, (index) {
+                                this.filteredItems(this.filter).length,
+                                (index) {
                               ItemDto item = this.filteredItems(filter)[index];
                               return DataRow(
                                   onSelectChanged: (selected) =>
@@ -107,9 +110,24 @@ class _ItemListState extends State<ItemList> {
                                     // TODO: add item code
                                     DataCell(Text(item.name)),
                                     DataCell(Text(item.brand)),
-                                    DataCell(Text('${item.retail}', style: TextStyle(color: Colors.green),)),
-                                    DataCell(Text('${item.wholeSale}', style: TextStyle(color: Colors.yellow[900]),)),
-                                    DataCell(Text('${item.capital}', style: TextStyle(color: Colors.deepOrange),)),
+                                    DataCell(Text(
+                                      '${item.retail}',
+                                      style: TextStyle(color: Colors.green),
+                                    )),
+                                    DataCell(Text(
+                                      '${item.wholeSale}',
+                                      style:
+                                          TextStyle(color: Colors.yellow[900]),
+                                    )),
+                                    DataCell(Text(
+                                      '${item.capital}',
+                                      style:
+                                          TextStyle(color: Colors.deepOrange),
+                                    )),
+                                    DataCell(IconButton(
+                                      icon: Icon(LineAwesomeIcons.trash, color: AppColor.error),
+                                      onPressed: () => confirmDelete(item),
+                                    )),
                                   ]);
                             }),
                           ),
@@ -119,17 +137,21 @@ class _ItemListState extends State<ItemList> {
                   ),
                 ),
                 Visibility(
-                  visible: this.filteredItems(this.filter).length == 0,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(LineAwesomeIcons.times_circle,size: 50, color: AppColor.error,),
-                      Text('No item found', style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-                      Text('Adjust your filter or create new items')
-                    ]
-                  )
-                )
+                    visible: this.filteredItems(this.filter).length == 0,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            LineAwesomeIcons.times_circle,
+                            size: 50,
+                            color: AppColor.error,
+                          ),
+                          Text('No item found',
+                              style: TextStyle(
+                                  fontSize: 30, fontWeight: FontWeight.bold)),
+                          Text('Adjust your filter or create new items')
+                        ]))
               ],
             ),
           ),
@@ -142,12 +164,13 @@ class _ItemListState extends State<ItemList> {
     if (filter.trim().isEmpty) {
       return this.items;
     }
+    filter = filter.toLowerCase();
     return items.where((item) {
-      return item.name.contains(filter) ||
-          item.brand.contains(filter) ||
-          item.retail.toString().contains(filter) ||
-          item.wholeSale.toString().contains(filter) ||
-          item.capital.toString().contains(filter);
+      return item.name.toLowerCase().contains(filter) ||
+          item.brand.toLowerCase().contains(filter) ||
+          item.retail.toString().toLowerCase().contains(filter) ||
+          item.wholeSale.toString().toLowerCase().contains(filter) ||
+          item.capital.toString().toLowerCase().contains(filter);
     }).toList();
   }
 
@@ -156,6 +179,36 @@ class _ItemListState extends State<ItemList> {
         barrierDismissible: false,
         context: context,
         builder: (context) => ItemCreateFormDialog(isView, item: dto));
+    setItemList();
+  }
+
+  void setItemList() {
     setState(() => this.items = service.findAll());
+  }
+
+  void confirmDelete(ItemDto itemDto) async {
+    showDialog<AlertDialog>(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Row(
+          children: [
+            Text('Deleting'),
+            Spacer(),
+            Icon(LineAwesomeIcons.warning, color: AppColor.error, size: 30)
+          ],
+        ),
+        content: Text('Delete this item?'),
+        actions: [
+          FlatButton(onPressed: () => Navigator.pop(context), child: Icon(LineAwesomeIcons.times), color: AppColor.error),
+          MaterialButton(onPressed: () => deleteItem(itemDto.id), child: Icon(LineAwesomeIcons.check), color: AppColor.primary)
+        ],
+      ));
+  }
+
+  void deleteItem(String id) {
+    service.delete(id);
+    setItemList();
+    Navigator.pop(context);
   }
 }
